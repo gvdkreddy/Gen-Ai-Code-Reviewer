@@ -71,24 +71,24 @@ export default function HistoryDetail() {
     <AppLayout>
       <div className="space-y-6 animate-fade-in">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate("/history")}
-              className="mb-4"
+              className="mb-2 md:mb-4"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to History
+              Back
             </Button>
-            <h1 className="text-2xl font-bold">Code Submission Details</h1>
+            <h1 className="text-xl md:text-2xl font-bold">Code Submission Details</h1>
           </div>
           <div className="flex items-start gap-4">
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Overall Score</p>
+              <p className="text-xs md:text-sm text-muted-foreground">Overall Score</p>
               <div className="flex justify-end">
-                <ScoreDisplay score={submission.score || 0} size="lg" />
+                <ScoreDisplay score={submission.score || 0} size="md md:lg" />
               </div>
             </div>
           </div>
@@ -96,16 +96,16 @@ export default function HistoryDetail() {
 
         {/* Meta Information */}
         <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary" className="capitalize text-base">
+          <Badge variant="secondary" className="capitalize text-xs md:text-sm">
             {submission.language}
           </Badge>
-          <Badge variant="outline">
+          <Badge variant="outline" className="text-xs">
             {formatDistanceToNow(new Date(submission.created_at), {
               addSuffix: true,
             })}
           </Badge>
           {submission.issues_found && (
-            <Badge variant="outline">
+            <Badge variant="outline" className="text-xs">
               {(submission.issues_found as any[]).length} issues found
             </Badge>
           )}
@@ -113,24 +113,24 @@ export default function HistoryDetail() {
 
         {/* Tabs */}
         <Tabs defaultValue="original" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="original">Original Code</TabsTrigger>
-            <TabsTrigger value="optimized">Optimized</TabsTrigger>
-            <TabsTrigger value="rewritten">Rewritten</TabsTrigger>
-            <TabsTrigger value="issues">Issues</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+            <TabsTrigger value="original" className="text-xs md:text-sm">Original</TabsTrigger>
+            <TabsTrigger value="optimized" className="text-xs md:text-sm">Optimized</TabsTrigger>
+            <TabsTrigger value="rewritten" className="hidden sm:inline-flex text-xs md:text-sm">Rewritten</TabsTrigger>
+            <TabsTrigger value="issues" className="text-xs md:text-sm">Issues</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="original" className="mt-6">
+          <TabsContent value="original" className="mt-4 md:mt-6">
             <CodeEditor
               value={submission.original_code}
               language={submission.language}
               readOnly
               title="Original Code"
-              maxHeight="600px"
+              maxHeight="400px md:600px"
             />
           </TabsContent>
 
-          <TabsContent value="optimized" className="mt-6">
+          <TabsContent value="optimized" className="mt-4 md:mt-6">
             {submission.optimized_code ? (
               <CodeComparison
                 originalCode={submission.original_code}
@@ -139,13 +139,13 @@ export default function HistoryDetail() {
                 changes={["Improved time complexity", "Reduced memory usage"]}
               />
             ) : (
-              <div className="rounded-xl border border-border bg-card p-12 text-center">
-                <p className="text-muted-foreground">No optimized version available</p>
+              <div className="rounded-xl border border-border bg-card p-6 md:p-12 text-center">
+                <p className="text-xs md:text-sm text-muted-foreground">No optimized version available</p>
               </div>
             )}
           </TabsContent>
 
-          <TabsContent value="rewritten" className="mt-6">
+          <TabsContent value="rewritten" className="mt-4 md:mt-6">
             {submission.review_result && (
               <CodeComparison
                 originalCode={submission.original_code}
@@ -159,12 +159,12 @@ export default function HistoryDetail() {
             )}
           </TabsContent>
 
-          <TabsContent value="issues" className="mt-6">
+          <TabsContent value="issues" className="mt-4 md:mt-6">
             {submission.issues_found && (submission.issues_found as any[]).length > 0 ? (
               <IssuesList issues={submission.issues_found as any[]} />
             ) : (
-              <div className="rounded-xl border border-border bg-card p-12 text-center">
-                <p className="text-muted-foreground">No issues found</p>
+              <div className="rounded-xl border border-border bg-card p-6 md:p-12 text-center">
+                <p className="text-xs md:text-sm text-muted-foreground">No issues found</p>
               </div>
             )}
           </TabsContent>
