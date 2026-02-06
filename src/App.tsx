@@ -13,6 +13,7 @@ import HistoryDetail from "./pages/HistoryDetail";
 import Chat from "./pages/Chat";
 import Feedback from "./pages/Feedback";
 import Analytics from "./pages/Analytics";
+import AboutTeam from "./pages/AboutTeam";
 import NotFound from "./pages/NotFound";
 import { Loader2 } from "lucide-react";
 
@@ -88,12 +89,20 @@ function AppRoutes() {
             <Feedback />
           </ProtectedRoute>
         }
-      /> 
+      />
       <Route
         path="/analytics"
         element={
           <ProtectedRoute>
             <Analytics />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/about-team"
+        element={
+          <ProtectedRoute>
+            <AboutTeam />
           </ProtectedRoute>
         }
       />
@@ -117,5 +126,3 @@ const App = () => (
 );
 
 export default App;
-
-
