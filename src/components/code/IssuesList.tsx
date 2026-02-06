@@ -69,12 +69,12 @@ const typeConfig = {
 export function IssuesList({ issues, className }: IssuesListProps) {
   if (!issues || issues.length === 0) {
     return (
-      <div className={cn("rounded-lg border border-border bg-card p-6 text-center", className)}>
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-success/20">
-          <Shield className="h-6 w-6 text-success" />
+      <div className={cn("rounded-lg border border-border bg-card p-4 md:p-6 text-center", className)}>
+        <div className="mx-auto mb-3 flex h-10 md:h-12 w-10 md:w-12 items-center justify-center rounded-full bg-success/20">
+          <Shield className="h-5 md:h-6 w-5 md:w-6 text-success" />
         </div>
-        <p className="font-medium text-foreground">No Issues Found</p>
-        <p className="text-sm text-muted-foreground">Your code looks great!</p>
+        <p className="text-sm md:text-base font-medium text-foreground">No Issues Found</p>
+        <p className="text-xs md:text-sm text-muted-foreground">Your code looks great!</p>
       </div>
     );
   }
@@ -92,10 +92,10 @@ export function IssuesList({ issues, className }: IssuesListProps) {
   const severityOrder = ["critical", "high", "medium", "low"];
 
   return (
-    <div className={cn("space-y-4", className)}>
-      <div className="flex items-center gap-4">
-        <h3 className="text-lg font-semibold">Issues Found ({issues.length})</h3>
-        <div className="flex gap-2">
+    <div className={cn("space-y-3 md:space-y-4", className)}>
+      <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+        <h3 className="text-base md:text-lg font-semibold">Issues Found ({issues.length})</h3>
+        <div className="flex flex-wrap gap-2">
           {severityOrder.map((severity) => {
             const count = groupedIssues[severity]?.length || 0;
             if (count === 0) return null;
@@ -109,7 +109,7 @@ export function IssuesList({ issues, className }: IssuesListProps) {
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2 md:space-y-3">
         {severityOrder.map((severity) => {
           const severityIssues = groupedIssues[severity];
           if (!severityIssues?.length) return null;
@@ -122,14 +122,14 @@ export function IssuesList({ issues, className }: IssuesListProps) {
             return (
               <div
                 key={`${severity}-${idx}`}
-                className="animate-fade-in rounded-lg border border-border bg-card p-4 transition-colors hover:bg-card/80"
+                className="animate-fade-in rounded-lg border border-border bg-card p-3 md:p-4 transition-colors hover:bg-card/80"
               >
-                <div className="flex items-start gap-3">
-                  <div className={cn("mt-0.5", typeConf.color)}>
-                    <TypeIcon className="h-5 w-5" />
+                <div className="flex items-start gap-2 md:gap-3">
+                  <div className={cn("mt-0.5 flex-shrink-0", typeConf.color)}>
+                    <TypeIcon className="h-4 md:h-5 w-4 md:w-5" />
                   </div>
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-2">
+                  <div className="flex-1 space-y-2 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
                       <Badge className={cn("text-xs", sevConfig.className)}>
                         {sevConfig.label}
                       </Badge>
@@ -142,7 +142,7 @@ export function IssuesList({ issues, className }: IssuesListProps) {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-foreground">{issue.message}</p>
+                    <p className="text-xs md:text-sm text-foreground">{issue.message}</p>
                     {issue.suggestion && (
                       <div className="rounded-md bg-muted/50 p-2">
                         <p className="text-xs text-muted-foreground">
