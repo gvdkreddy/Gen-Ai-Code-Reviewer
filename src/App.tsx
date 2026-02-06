@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Analyzer from "./pages/Analyzer";
 import History from "./pages/History";
+import HistoryDetail from "./pages/HistoryDetail";
 import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
 import { Loader2 } from "lucide-react";
@@ -66,7 +67,7 @@ function AppRoutes() {
         path="/history/:id"
         element={
           <ProtectedRoute>
-            <History />
+            <HistoryDetail />
           </ProtectedRoute>
         }
       />
