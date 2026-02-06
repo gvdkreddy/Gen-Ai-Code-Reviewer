@@ -54,13 +54,13 @@ export default function Dashboard() {
 
   return (
     <AppLayout>
-      <div className="space-y-8">
+      <div className="space-y-6 md:space-y-8">
         {/* Header */}
         <div className="animate-fade-in">
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-2xl md:text-3xl font-bold">
             Welcome back, <span className="gradient-text">{profile?.display_name || "Developer"}</span>
           </h1>
-          <p className="mt-2 text-muted-foreground">
+          <p className="mt-1 md:mt-2 text-sm md:text-base text-muted-foreground">
             Here's an overview of your code analysis activity
           </p>
         </div>
