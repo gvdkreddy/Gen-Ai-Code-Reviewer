@@ -236,7 +236,7 @@ export default function Analyzer() {
         onClick={() => setShowOriginalOptions(!showOriginalOptions)}
         className="px-4 py-2  bg-black text-white rounded"
       >
-        Export Original
+        Export Original Code
       </button>
 
       {showOriginalOptions && (
@@ -268,7 +268,7 @@ export default function Analyzer() {
     onClick={() => setShowOptimizedOptions(!showOptimizedOptions)}
     className="px-4 py-2 bg-black text-white rounded"
   >
-    Export Optimized
+    Export Optimized Code
   </button>
 
   {showOptimizedOptions && (
@@ -299,7 +299,7 @@ export default function Analyzer() {
     onClick={() => setShowRewrittenOptions(!showRewrittenOptions)}
     className="px-4 py-2 bg-black text-white rounded"
   >
-    Export Rewritten
+    Export Rewritten Code
   </button>
 
   {showRewrittenOptions && (
@@ -426,4 +426,5 @@ export default function Analyzer() {
     </AppLayout>
   );
 }
+
 
