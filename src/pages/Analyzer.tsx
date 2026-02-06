@@ -153,41 +153,47 @@ export default function Analyzer() {
 
   return (
     <AppLayout>
-      <div className="space-y-6">
+      <div className="space-y-4 md:space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between animate-fade-in">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0 animate-fade-in">
           <div>
-            <h1 className="text-2xl font-bold">Code Analyzer</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-xl md:text-2xl font-bold">Code Analyzer</h1>
+            <p className="text-xs md:text-sm text-muted-foreground mt-1">
               Paste your code for AI-powered review, optimization, and scoring
             </p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={clearAll} disabled={isAnalyzing}>
+          <div className="flex gap-2 w-full md:w-auto">
+            <Button 
+              variant="outline" 
+              onClick={clearAll} 
+              disabled={isAnalyzing}
+              className="flex-1 md:flex-none"
+            >
               <RefreshCw className="mr-2 h-4 w-4" />
-              Clear
+              <span className="hidden sm:inline">Clear</span>
             </Button>
             <Button
               onClick={analyzeCode}
               disabled={isAnalyzing || !code.trim()}
-              className="bg-gradient-primary hover:opacity-90"
+              className="flex-1 md:flex-none bg-gradient-primary hover:opacity-90"
             >
               {isAnalyzing ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Analyzing...
+                  <span className="hidden sm:inline">Analyzing...</span>
                 </>
               ) : (
                 <>
                   <Play className="mr-2 h-4 w-4" />
-                  Analyze Code
+                  <span className="hidden sm:inline">Analyze</span>
+                  <span className="sm:hidden">Run</span>
                 </>
               )}
             </Button>
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-4 md:gap-6 lg:grid-cols-3">
           {/* Code Input */}
           <div className="lg:col-span-2 animate-slide-up">
             <CodeEditor
@@ -196,27 +202,27 @@ export default function Analyzer() {
               language={language}
               onLanguageChange={setLanguage}
               title="Your Code"
-              maxHeight="500px"
+              maxHeight="400px md:500px"
             />
           </div>
 
           {/* Score Display */}
           <div className="animate-slide-up" style={{ animationDelay: "100ms" }}>
-            <div className="rounded-xl border border-border bg-card p-6">
-              <h3 className="mb-4 text-lg font-semibold">Code Score</h3>
+            <div className="rounded-xl border border-border bg-card p-4 md:p-6">
+              <h3 className="mb-4 text-base md:text-lg font-semibold">Code Score</h3>
               {result ? (
-                <div className="space-y-6">
+                <div className="space-y-4 md:space-y-6">
                   <div className="flex justify-center">
-                    <ScoreDisplay score={result.score} size="lg" />
+                    <ScoreDisplay score={result.score} size="md md:lg" />
                   </div>
                   <ScoreBreakdown scores={result.scores} />
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-                    <Sparkles className="h-8 w-8 text-muted-foreground" />
+                <div className="flex flex-col items-center justify-center py-8 md:py-12 text-center">
+                  <div className="mb-4 flex h-14 md:h-16 w-14 md:w-16 items-center justify-center rounded-full bg-muted">
+                    <Sparkles className="h-6 md:h-8 w-6 md:w-8 text-muted-foreground" />
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs md:text-sm text-muted-foreground">
                     Submit code to see your score
                   </p>
                 </div>
@@ -227,129 +233,129 @@ export default function Analyzer() {
 
         {/* Results */}
         {result && (
-          <div className="animate-slide-up space-y-6">
-<div className="rounded-xl border border-border bg-card p-6">
-  <h3 className="mb-4 text-lg font-semibold">Export Results & Analysis</h3>
-  <div className="space-y-4">
-    <div>
-      <button
-        onClick={() => setShowOriginalOptions(!showOriginalOptions)}
-        className="px-4 py-2  bg-black text-white rounded"
-      >
-        Export Original Code
-      </button>
+          <div className="animate-slide-up space-y-4 md:space-y-6">
+            <div className="rounded-xl border border-border bg-card p-4 md:p-6">
+              <h3 className="mb-4 text-base md:text-lg font-semibold">Export Results & Analysis</h3>
+              <div className="space-y-3 md:space-y-4">
+                <div>
+                  <button
+                    onClick={() => setShowOriginalOptions(!showOriginalOptions)}
+                    className="w-full md:w-auto px-3 md:px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+                  >
+                    Export Original Code
+                  </button>
 
-      {showOriginalOptions && (
-        <div className="mt-2 ml-4">
-          <DownloadButton
-            code={code}
-            filename={`original_${Date.now()}.csv`}
-            label="Export as CSV"
-          />
+                  {showOriginalOptions && (
+                    <div className="mt-2 ml-0 md:ml-4 flex flex-col gap-2">
+                      <DownloadButton
+                        code={code}
+                        filename={`original_${Date.now()}.csv`}
+                        label="Export as CSV"
+                      />
 
-          <DownloadButton
-            code={code}
-            filename={`original_${Date.now()}.json`}
-            label="Export as Json"
-          />
+                      <DownloadButton
+                        code={code}
+                        filename={`original_${Date.now()}.json`}
+                        label="Export as Json"
+                      />
 
-          <DownloadButton
-            code={code}
-            filename={`original_${Date.now()}.txt`}
-            label="Export as Text"
-          />
-        </div>
-      )}
-    </div>
-<div>
-</div>
-<div>
-  <button
-    onClick={() => setShowOptimizedOptions(!showOptimizedOptions)}
-    className="px-4 py-2 bg-black text-white rounded"
-  >
-    Export Optimized Code
-  </button>
+                      <DownloadButton
+                        code={code}
+                        filename={`original_${Date.now()}.txt`}
+                        label="Export as Text"
+                      />
+                    </div>
+                  )}
+                </div>
 
-  {showOptimizedOptions && (
-    <div className="mt-2 ml-4">
-      <DownloadButton
-        code={result.optimizedCode}
-        filename={`optimized_${Date.now()}.csv`}
-        label="Export as CSV"
-      />
+                <div>
+                  <button
+                    onClick={() => setShowOptimizedOptions(!showOptimizedOptions)}
+                    className="w-full md:w-auto px-3 md:px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+                  >
+                    Export Optimized Code
+                  </button>
 
-      <DownloadButton
-        code={result.optimizedCode}
-        filename={`optimized_${Date.now()}.json`}
-        label="Export as JSON"
-      />
+                  {showOptimizedOptions && (
+                    <div className="mt-2 ml-0 md:ml-4 flex flex-col gap-2">
+                      <DownloadButton
+                        code={result.optimizedCode}
+                        filename={`optimized_${Date.now()}.csv`}
+                        label="Export as CSV"
+                      />
 
-      <DownloadButton
-            code={code}
-            filename={`original_${Date.now()}.txt`}
-            label="Export as Text"
-      />
-    </div>
-  )}
-</div>
+                      <DownloadButton
+                        code={result.optimizedCode}
+                        filename={`optimized_${Date.now()}.json`}
+                        label="Export as JSON"
+                      />
 
-<div>
-  <button
-    onClick={() => setShowRewrittenOptions(!showRewrittenOptions)}
-    className="px-4 py-2 bg-black text-white rounded"
-  >
-    Export Rewritten Code
-  </button>
+                      <DownloadButton
+                        code={result.optimizedCode}
+                        filename={`optimized_${Date.now()}.txt`}
+                        label="Export as Text"
+                      />
+                    </div>
+                  )}
+                </div>
 
-  {showRewrittenOptions && (
-    <div className="mt-2 ml-4">
-      <DownloadButton
-        code={result.rewrittenCode}
-        filename={`rewritten_${Date.now()}.csv`}
-        label="Export as CSV"
-      />
+                <div>
+                  <button
+                    onClick={() => setShowRewrittenOptions(!showRewrittenOptions)}
+                    className="w-full md:w-auto px-3 md:px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+                  >
+                    Export Rewritten Code
+                  </button>
 
-      <DownloadButton
-        code={result.rewrittenCode}
-        filename={`rewritten_${Date.now()}.json`}
-        label="Export as JSON"
-      />
-      <DownloadButton
-            code={code}
-            filename={`original_${Date.now()}.txt`}
-            label="Export as Text"
-          />
-    </div>
-  )}
-</div>
+                  {showRewrittenOptions && (
+                    <div className="mt-2 ml-0 md:ml-4 flex flex-col gap-2">
+                      <DownloadButton
+                        code={result.rewrittenCode}
+                        filename={`rewritten_${Date.now()}.csv`}
+                        label="Export as CSV"
+                      />
+
+                      <DownloadButton
+                        code={result.rewrittenCode}
+                        filename={`rewritten_${Date.now()}.json`}
+                        label="Export as JSON"
+                      />
+                      <DownloadButton
+                        code={result.rewrittenCode}
+                        filename={`rewritten_${Date.now()}.txt`}
+                        label="Export as Text"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
+
             <Tabs defaultValue="issues" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4">
-                <TabsTrigger value="issues" className="gap-2">
-                  <Shield className="h-4 w-4" />
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:w-auto lg:grid-cols-4">
+                <TabsTrigger value="issues" className="gap-1 md:gap-2 text-xs md:text-sm">
+                  <Shield className="h-3 md:h-4 w-3 md:w-4" />
                   <span className="hidden sm:inline">Issues</span>
                 </TabsTrigger>
-                <TabsTrigger value="optimized" className="gap-2">
-                  <Zap className="h-4 w-4" />
+                <TabsTrigger value="optimized" className="gap-1 md:gap-2 text-xs md:text-sm">
+                  <Zap className="h-3 md:h-4 w-3 md:w-4" />
                   <span className="hidden sm:inline">Optimized</span>
                 </TabsTrigger>
-                <TabsTrigger value="rewritten" className="gap-2">
-                  <Sparkles className="h-4 w-4" />
+                <TabsTrigger value="rewritten" className="gap-1 md:gap-2 text-xs md:text-sm">
+                  <Sparkles className="h-3 md:h-4 w-3 md:w-4" />
                   <span className="hidden sm:inline">Rewritten</span>
                 </TabsTrigger>
-                <TabsTrigger value="summary" className="gap-2">
-                  <CheckCircle className="h-4 w-4" />
+                <TabsTrigger value="summary" className="gap-1 md:gap-2 text-xs md:text-sm">
+                  <CheckCircle className="h-3 md:h-4 w-3 md:w-4" />
                   <span className="hidden sm:inline">Summary</span>
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="issues" className="mt-6">
+              <TabsContent value="issues" className="mt-4 md:mt-6">
                 <IssuesList issues={result.issues} />
               </TabsContent>
 
-              <TabsContent value="optimized" className="mt-6">
+              <TabsContent value="optimized" className="mt-4 md:mt-6">
                 <CodeComparison
                   originalCode={code}
                   improvedCode={result.optimizedCode}
@@ -358,7 +364,7 @@ export default function Analyzer() {
                 />
               </TabsContent>
 
-              <TabsContent value="rewritten" className="mt-6">
+              <TabsContent value="rewritten" className="mt-4 md:mt-6">
                 <CodeComparison
                   originalCode={code}
                   improvedCode={result.rewrittenCode}
@@ -367,16 +373,16 @@ export default function Analyzer() {
                 />
               </TabsContent>
 
-              <TabsContent value="summary" className="mt-6">
-                <div className="rounded-xl border border-border bg-card p-6">
-                  <h3 className="mb-4 text-lg font-semibold">Review Summary</h3>
-                  <p className="mb-6 text-muted-foreground">{result.review.summary}</p>
+              <TabsContent value="summary" className="mt-4 md:mt-6">
+                <div className="rounded-xl border border-border bg-card p-4 md:p-6">
+                  <h3 className="mb-4 text-base md:text-lg font-semibold">Review Summary</h3>
+                  <p className="mb-4 md:mb-6 text-xs md:text-sm text-muted-foreground">{result.review.summary}</p>
 
-                  <div className="grid gap-4 md:grid-cols-2">
+                  <div className="grid gap-3 md:gap-4 grid-cols-1 md:grid-cols-2">
                     {result.review.improvements.length > 0 && (
-                      <div className="rounded-lg bg-muted/30 p-4">
-                        <h4 className="mb-2 font-medium text-success">Improvements Made</h4>
-                        <ul className="space-y-1 text-sm text-muted-foreground">
+                      <div className="rounded-lg bg-muted/30 p-3 md:p-4">
+                        <h4 className="mb-2 text-sm font-medium text-success">Improvements Made</h4>
+                        <ul className="space-y-1 text-xs md:text-sm text-muted-foreground">
                           {result.review.improvements.map((item, i) => (
                             <li key={i}>• {item}</li>
                           ))}
@@ -385,9 +391,9 @@ export default function Analyzer() {
                     )}
 
                     {result.review.securityIssues.length > 0 && (
-                      <div className="rounded-lg bg-destructive/10 p-4">
-                        <h4 className="mb-2 font-medium text-destructive">Security Issues</h4>
-                        <ul className="space-y-1 text-sm text-muted-foreground">
+                      <div className="rounded-lg bg-destructive/10 p-3 md:p-4">
+                        <h4 className="mb-2 text-sm font-medium text-destructive">Security Issues</h4>
+                        <ul className="space-y-1 text-xs md:text-sm text-muted-foreground">
                           {result.review.securityIssues.map((item, i) => (
                             <li key={i}>• {item}</li>
                           ))}
@@ -396,9 +402,9 @@ export default function Analyzer() {
                     )}
 
                     {result.review.performanceIssues.length > 0 && (
-                      <div className="rounded-lg bg-warning/10 p-4">
-                        <h4 className="mb-2 font-medium text-warning">Performance Issues</h4>
-                        <ul className="space-y-1 text-sm text-muted-foreground">
+                      <div className="rounded-lg bg-warning/10 p-3 md:p-4">
+                        <h4 className="mb-2 text-sm font-medium text-warning">Performance Issues</h4>
+                        <ul className="space-y-1 text-xs md:text-sm text-muted-foreground">
                           {result.review.performanceIssues.map((item, i) => (
                             <li key={i}>• {item}</li>
                           ))}
@@ -407,9 +413,9 @@ export default function Analyzer() {
                     )}
 
                     {result.review.bestPractices.length > 0 && (
-                      <div className="rounded-lg bg-info/10 p-4">
-                        <h4 className="mb-2 font-medium text-info">Best Practices</h4>
-                        <ul className="space-y-1 text-sm text-muted-foreground">
+                      <div className="rounded-lg bg-info/10 p-3 md:p-4">
+                        <h4 className="mb-2 text-sm font-medium text-info">Best Practices</h4>
+                        <ul className="space-y-1 text-xs md:text-sm text-muted-foreground">
                           {result.review.bestPractices.map((item, i) => (
                             <li key={i}>• {item}</li>
                           ))}
