@@ -12,6 +12,7 @@ import {
   Zap,
   Send,
   BarChart3,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "./ThemeToggle";
@@ -46,6 +47,11 @@ const navItems = [
     title: "Feedback",
     href: "/feedback",
     icon: Send,
+  },
+  {
+    title: "About Team",
+    href: "/about-team",
+    icon: Users,
   },
 ];
 
