@@ -101,26 +101,26 @@ export default function Feedback() {
 
   return (
     <AppLayout>
-      <div className="mx-auto max-w-2xl space-y-8 animate-fade-in">
+      <div className="mx-auto max-w-2xl space-y-6 md:space-y-8 animate-fade-in px-4">
         {/* Header */}
         <div className="text-center">
-          <div className="mb-6 flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-primary glow-primary">
-              <MessageSquare className="h-8 w-8 text-primary-foreground" />
+          <div className="mb-4 md:mb-6 flex justify-center">
+            <div className="flex h-12 md:h-16 w-12 md:w-16 items-center justify-center rounded-2xl bg-gradient-primary glow-primary">
+              <MessageSquare className="h-6 md:h-8 w-6 md:w-8 text-primary-foreground" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold">Send Us Your Feedback</h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="text-2xl md:text-3xl font-bold">Send Us Your Feedback</h1>
+          <p className="mt-1 md:mt-2 text-xs md:text-sm text-muted-foreground">
             We'd love to hear your thoughts, suggestions, or report any issues you've
             encountered.
           </p>
         </div>
 
         {/* Feedback Form */}
-        <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-border bg-card p-8">
+        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6 rounded-xl border border-border bg-card p-4 md:p-8">
           {/* Name */}
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-base font-medium">
+            <Label htmlFor="name" className="text-sm md:text-base font-medium">
               Your Name
             </Label>
             <Input
@@ -129,14 +129,14 @@ export default function Feedback() {
               placeholder="John Doe"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="bg-muted/50"
+              className="bg-muted/50 text-sm"
               disabled={isSubmitting}
             />
           </div>
 
           {/* Email */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-base font-medium">
+            <Label htmlFor="email" className="text-sm md:text-base font-medium">
               Your Email
             </Label>
             <Input
@@ -145,14 +145,14 @@ export default function Feedback() {
               placeholder="your.email@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-muted/50"
+              className="bg-muted/50 text-sm"
               disabled={isSubmitting}
             />
           </div>
 
           {/* Message */}
           <div className="space-y-2">
-            <Label htmlFor="message" className="text-base font-medium">
+            <Label htmlFor="message" className="text-sm md:text-base font-medium">
               Your Feedback
             </Label>
             <Textarea
@@ -160,7 +160,7 @@ export default function Feedback() {
               placeholder="Share your thoughts, suggestions, or report any issues..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="min-h-32 resize-none bg-muted/50"
+              className="min-h-24 md:min-h-32 resize-none bg-muted/50 text-sm"
               disabled={isSubmitting}
             />
           </div>
@@ -169,7 +169,7 @@ export default function Feedback() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-gradient-primary hover:opacity-90"
+            className="w-full bg-gradient-primary hover:opacity-90 text-sm md:text-base"
           >
             {isSubmitting ? (
               <>
@@ -186,12 +186,12 @@ export default function Feedback() {
         </form>
 
         {/* Info Box */}
-        <div className="space-y-4 rounded-lg border border-border/50 bg-muted/30 p-6">
-          <div className="flex gap-3">
+        <div className="space-y-3 md:space-y-4 rounded-lg border border-border/50 bg-muted/30 p-4 md:p-6">
+          <div className="flex gap-2 md:gap-3">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-primary" />
             <div>
-              <h3 className="font-semibold">We value your input</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <h3 className="text-sm md:text-base font-semibold">We value your input</h3>
+              <p className="mt-1 text-xs md:text-sm text-muted-foreground">
                 Your feedback helps us improve the platform. Whether it's a bug report,
                 feature request, or general suggestion, please don't hesitate to share.
               </p>
@@ -200,9 +200,9 @@ export default function Feedback() {
         </div>
 
         {/* Response Time Info */}
-        <div className="rounded-lg border border-border/50 bg-card/50 p-6 text-center">
-          <CheckCircle className="mx-auto mb-3 h-6 w-6 text-success" />
-          <p className="text-sm text-muted-foreground">
+        <div className="rounded-lg border border-border/50 bg-card/50 p-4 md:p-6 text-center">
+          <CheckCircle className="mx-auto mb-3 h-5 md:h-6 w-5 md:w-6 text-success" />
+          <p className="text-xs md:text-sm text-muted-foreground">
             We typically respond to feedback within 24-48 hours.
           </p>
         </div>
