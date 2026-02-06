@@ -12,6 +12,7 @@ import {
   Shield,
   Zap,
   Send,
+  Users,
   BarChart3,
   Menu,
   X,
@@ -50,6 +51,11 @@ const navItems = [
     title: "Feedback",
     href: "/feedback",
     icon: Send,
+  },
+  {
+    title: "About Team",
+    href: "/about-team",
+    icon: Users,
   },
 ];
 
