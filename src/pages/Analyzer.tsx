@@ -17,6 +17,7 @@ import {
   Zap,
   Shield,
   CheckCircle,
+  Download,
 } from "lucide-react";
 import type { Issue, ReviewResult } from "@/lib/supabase";
 
@@ -35,6 +36,50 @@ type AnalysisResult = {
   rewrittenCode: string;
 };
 
+const getFileExtension = (language: string): string => {
+  const extensions: Record<string, string> = {
+    javascript: "js",
+    typescript: "ts",
+    python: "py",
+    java: "java",
+    cpp: "cpp",
+    csharp: "cs",
+    php: "php",
+    ruby: "rb",
+    go: "go",
+    rust: "rs",
+  };
+  return extensions[language?.toLowerCase()] || "txt";
+};
+
+interface DownloadButtonProps {
+  code: string;
+  filename: string;
+  label: string;
+}
+
+const DownloadButton = ({ code, filename, label }: DownloadButtonProps) => {
+  const handleDownload = () => {
+    const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const element = document.createElement("a");
+    element.setAttribute("href", url);
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <Button variant="outline" onClick={handleDownload}>
+      <Download className="mr-2 h-4 w-4" />
+      {label}
+    </Button>
+  );
+};
+
 export default function Analyzer() {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -42,6 +87,9 @@ export default function Analyzer() {
   const [language, setLanguage] = useState("javascript");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [showOriginalOptions, setShowOriginalOptions] = useState(false);
+  const [showOptimizedOptions, setShowOptimizedOptions] = useState(false);
+  const [showRewrittenOptions, setShowRewrittenOptions] = useState(false);
 
   const analyzeCode = async () => {
     if (!code.trim()) {
@@ -180,6 +228,103 @@ export default function Analyzer() {
         {/* Results */}
         {result && (
           <div className="animate-slide-up space-y-6">
+<div className="rounded-xl border border-border bg-card p-6">
+  <h3 className="mb-4 text-lg font-semibold">Export Results & Analysis</h3>
+  <div className="space-y-4">
+    <div>
+      <button
+        onClick={() => setShowOriginalOptions(!showOriginalOptions)}
+        className="px-4 py-2  bg-black text-white rounded"
+      >
+        Export Original
+      </button>
+
+      {showOriginalOptions && (
+        <div className="mt-2 ml-4">
+          <DownloadButton
+            code={code}
+            filename={`original_${Date.now()}.csv`}
+            label="Export as CSV"
+          />
+
+          <DownloadButton
+            code={code}
+            filename={`original_${Date.now()}.json`}
+            label="Export as Json"
+          />
+
+          <DownloadButton
+            code={code}
+            filename={`original_${Date.now()}.txt`}
+            label="Export as Text"
+          />
+        </div>
+      )}
+    </div>
+<div>
+</div>
+<div>
+  <button
+    onClick={() => setShowOptimizedOptions(!showOptimizedOptions)}
+    className="px-4 py-2 bg-black text-white rounded"
+  >
+    Export Optimized
+  </button>
+
+  {showOptimizedOptions && (
+    <div className="mt-2 ml-4">
+      <DownloadButton
+        code={result.optimizedCode}
+        filename={`optimized_${Date.now()}.csv`}
+        label="Export as CSV"
+      />
+
+      <DownloadButton
+        code={result.optimizedCode}
+        filename={`optimized_${Date.now()}.json`}
+        label="Export as JSON"
+      />
+
+      <DownloadButton
+            code={code}
+            filename={`original_${Date.now()}.txt`}
+            label="Export as Text"
+      />
+    </div>
+  )}
+</div>
+
+<div>
+  <button
+    onClick={() => setShowRewrittenOptions(!showRewrittenOptions)}
+    className="px-4 py-2 bg-black text-white rounded"
+  >
+    Export Rewritten
+  </button>
+
+  {showRewrittenOptions && (
+    <div className="mt-2 ml-4">
+      <DownloadButton
+        code={result.rewrittenCode}
+        filename={`rewritten_${Date.now()}.csv`}
+        label="Export as CSV"
+      />
+
+      <DownloadButton
+        code={result.rewrittenCode}
+        filename={`rewritten_${Date.now()}.json`}
+        label="Export as JSON"
+      />
+      <DownloadButton
+            code={code}
+            filename={`original_${Date.now()}.txt`}
+            label="Export as Text"
+          />
+    </div>
+  )}
+</div>
+              </div>
+            </div>
             <Tabs defaultValue="issues" className="w-full">
               <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4">
                 <TabsTrigger value="issues" className="gap-2">
@@ -281,3 +426,4 @@ export default function Analyzer() {
     </AppLayout>
   );
 }
+
