@@ -1,0 +1,155 @@
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  Code2,
+  LayoutDashboard,
+  History,
+  MessageSquare,
+  LogOut,
+  User,
+  Shield,
+  Zap,
+  Send,
+  BarChart3,
+  Menu,
+  X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
+import ThemeToggle from "./ThemeToggle";
+
+const navItems = [
+  {
+    title: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Analytics",
+    href: "/analytics",
+    icon: BarChart3,
+  },
+  {
+    title: "Code Analyzer",
+    href: "/analyzer",
+    icon: Code2,
+  },
+  {
+    title: "History",
+    href: "/history",
+    icon: History,
+  },
+  {
+    title: "AI Support",
+    href: "/chat",
+    icon: MessageSquare,
+  },
+  {
+    title: "Feedback",
+    href: "/feedback",
+    icon: Send,
+  },
+];
+
+export function MobileNav() {
+  const location = useLocation();
+  const { profile, role, signOut } = useAuth();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <div className="fixed top-0 left-0 right-0 z-40 md:hidden bg-background border-b border-border">
+        <div className="flex h-14 items-center justify-between px-4">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-primary">
+              <Zap className="h-4 w-4 text-primary-foreground" />
+            </div>
+            <h1 className="text-sm font-semibold">TeamKronix</h1>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setOpen(!open)}
+            className="h-9 w-9"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        </div>
+      </div>
+
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="left" className="w-64 p-0">
+          <SheetHeader className="border-b border-sidebar-border p-4">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-primary">
+                <Zap className="h-4 w-4 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-sm font-semibold">TeamKronix</h1>
+                <p className="text-xs text-muted-foreground">AI Agent</p>
+              </div>
+            </div>
+          </SheetHeader>
+
+          <nav className="space-y-1 p-4">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                    isActive
+                      ? "bg-sidebar-accent text-sidebar-primary glow-primary"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-primary"
+                  )}
+                >
+                  <item.icon className={cn("h-5 w-5", isActive && "text-sidebar-primary")} />
+                  <span>{item.title}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* User section */}
+          <div className="border-t border-sidebar-border p-4 space-y-3 absolute bottom-0 left-0 right-0">
+            <div className="flex items-center gap-3 rounded-lg bg-sidebar-accent/30 p-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20">
+                <User className="h-4 w-4 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="truncate text-sm font-medium text-sidebar-foreground">
+                  {profile?.display_name || "User"}
+                </p>
+                <div className="flex items-center gap-1">
+                  <Shield className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs capitalize text-muted-foreground">{role}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <ThemeToggle />
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-destructive"
+                onClick={() => {
+                  signOut();
+                  setOpen(false);
+                }}
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
+  );
+}
