@@ -23,10 +23,12 @@ interface CodeEditorProps {
 }
 
 const languages = [
+  { value: "html css", label: "HTML+CSS" },
   { value: "javascript", label: "JavaScript" },
   { value: "typescript", label: "TypeScript" },
   { value: "python", label: "Python" },
   { value: "java", label: "Java" },
+  { value: "c", label: "C" },
   { value: "cpp", label: "C++" },
   { value: "csharp", label: "C#" },
   { value: "go", label: "Go" },
