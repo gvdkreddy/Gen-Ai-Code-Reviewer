@@ -14,6 +14,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   {
@@ -104,14 +105,19 @@ export function Sidebar() {
               </div>
             </div>
           </div>
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive"
-            onClick={signOut}
-          >
-            <LogOut className="h-4 w-4" />
-            Sign Out
-          </Button>
+          <div className="flex items-center gap-2">
+            <div className="flex-1">
+              <ThemeToggle />
+            </div>
+            <Button
+              variant="ghost"
+              className="justify-start gap-2 text-muted-foreground hover:text-destructive"
+              onClick={signOut}
+            >
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">Sign Out</span>
+            </Button>
+          </div>
         </div>
       </div>
     </aside>
