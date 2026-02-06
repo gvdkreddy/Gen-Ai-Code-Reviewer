@@ -49,11 +49,18 @@ export function CodeEditor({
   const [copied, setCopied] = useState(false);
 
   const lines = value.split("\n");
+  const lineCount = Math.max(lines.length, 16);
+  const lineHeightRem = 1.5; // corresponds to Tailwind's leading-6 (1.5rem)
+  const contentMinHeight = `${lineCount * lineHeightRem}rem`;
 
   const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(value);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (e) {
+      // ignore clipboard errors
+    }
   };
 
   return (
@@ -100,12 +107,12 @@ export function CodeEditor({
       {/* Code area */}
       <div
         className="custom-scrollbar overflow-auto bg-muted/30"
-        style={{ maxHeight }}
+        style={{ maxHeight, minHeight: contentMinHeight }}
       >
-        <div className="flex">
+        <div className="flex" style={{ minHeight: contentMinHeight }}>
           {showLineNumbers && (
             <div className="sticky left-0 flex-shrink-0 select-none border-r border-border bg-muted/50 px-3 py-4 text-right font-mono text-xs text-muted-foreground">
-              {lines.map((_, i) => (
+              {Array.from({ length: lineCount }).map((_, i) => (
                 <div key={i} className="leading-6">
                   {i + 1}
                 </div>
@@ -114,14 +121,18 @@ export function CodeEditor({
           )}
           <div className="flex-1 p-4">
             {readOnly ? (
-              <pre className="font-mono text-sm leading-6 text-foreground whitespace-pre-wrap break-all">
+              <pre
+                className="font-mono text-sm leading-6 text-foreground whitespace-pre-wrap break-all"
+                style={{ minHeight: contentMinHeight }}
+              >
                 {value || "// No code"}
               </pre>
             ) : (
               <textarea
                 value={value}
                 onChange={(e) => onChange?.(e.target.value)}
-                className="min-h-[200px] w-full resize-none bg-transparent font-mono text-sm leading-6 text-foreground outline-none placeholder:text-muted-foreground"
+                className="w-full resize-none bg-transparent font-mono text-sm leading-6 text-foreground outline-none placeholder:text-muted-foreground"
+                style={{ minHeight: contentMinHeight }}
                 placeholder="// Paste your code here..."
                 spellCheck={false}
               />
