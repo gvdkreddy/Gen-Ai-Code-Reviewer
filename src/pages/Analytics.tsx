@@ -153,41 +153,41 @@ export default function Analytics() {
 
   return (
     <AppLayout>
-      <div className="space-y-8 animate-fade-in">
+      <div className="space-y-6 md:space-y-8 animate-fade-in">
         {/* Header */}
-        <div className="text-center">
-          <div className="mb-6 flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-primary glow-primary">
-              <BarChart3 className="h-8 w-8 text-primary-foreground" />
+        <div className="text-center px-4">
+          <div className="mb-4 md:mb-6 flex justify-center">
+            <div className="flex h-12 md:h-16 w-12 md:w-16 items-center justify-center rounded-2xl bg-gradient-primary glow-primary">
+              <BarChart3 className="h-6 md:h-8 w-6 md:w-8 text-primary-foreground" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold">Code Review Analytics</h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="text-2xl md:text-3xl font-bold">Code Review Analytics</h1>
+          <p className="mt-1 md:mt-2 text-xs md:text-sm text-muted-foreground">
             Programming language-wise code quality analysis and insights
           </p>
         </div>
 
         {/* Empty State */}
         {analytics.length === 0 ? (
-          <div className="rounded-xl border border-border bg-card p-12 text-center">
-            <AlertCircle className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
-            <h3 className="mb-2 text-lg font-semibold">No data available</h3>
-            <p className="text-muted-foreground">
+          <div className="rounded-xl border border-border bg-card p-6 md:p-12 text-center">
+            <AlertCircle className="mx-auto mb-4 h-10 md:h-12 w-10 md:w-12 text-muted-foreground" />
+            <h3 className="mb-2 text-base md:text-lg font-semibold">No data available</h3>
+            <p className="text-xs md:text-sm text-muted-foreground">
               Start analyzing code to see language-wise analytics
             </p>
           </div>
         ) : (
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
             {analytics.map((lang) => (
               <Card
                 key={lang.language}
-                className="overflow-hidden border-border bg-card p-6 transition-all hover:border-primary/30 animate-slide-up"
+                className="overflow-hidden border-border bg-card p-4 md:p-6 transition-all hover:border-primary/30 animate-slide-up"
               >
                 {/* Language Header */}
-                <div className="mb-6 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div className="mb-4 md:mb-6 flex items-center justify-between">
+                  <div className="flex items-center gap-2 md:gap-3">
                     <div
-                      className={`flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br ${
+                      className={`flex h-8 md:h-10 w-8 md:w-10 items-center justify-center rounded-lg bg-gradient-to-br ${
                         LANGUAGE_COLORS[lang.language] || "from-gray-500 to-gray-700"
                       }`}
                     >
@@ -196,7 +196,7 @@ export default function Analytics() {
                       </span>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold">
+                      <h3 className="text-base md:text-lg font-semibold">
                         {LANGUAGE_LABELS[lang.language] || lang.language}
                       </h3>
                       <p className="text-xs text-muted-foreground">
@@ -206,32 +206,32 @@ export default function Analytics() {
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-muted-foreground">Average Score</p>
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary text-lg font-bold text-primary-foreground">
+                    <div className="flex h-9 md:h-10 w-9 md:w-10 items-center justify-center rounded-lg bg-gradient-primary text-sm md:text-lg font-bold text-primary-foreground">
                       {lang.averageScore}
                     </div>
                   </div>
                 </div>
 
                 {/* Stats Grid */}
-                <div className="mb-6 grid grid-cols-2 gap-4">
+                <div className="mb-4 md:mb-6 grid grid-cols-2 gap-3 md:gap-4">
                   <div className="rounded-lg bg-muted/50 p-3">
                     <p className="text-xs text-muted-foreground">Total Reviews</p>
-                    <p className="text-2xl font-bold">{lang.totalReviews}</p>
+                    <p className="text-xl md:text-2xl font-bold">{lang.totalReviews}</p>
                   </div>
                   <div className="rounded-lg bg-success/10 p-3">
                     <p className="text-xs text-muted-foreground">Optimizations</p>
-                    <p className="text-2xl font-bold text-success">{lang.optimizationsCount}</p>
+                    <p className="text-xl md:text-2xl font-bold text-success">{lang.optimizationsCount}</p>
                   </div>
                 </div>
 
                 {/* Common Issues */}
-                <div className="mb-6">
-                  <h4 className="mb-3 text-sm font-semibold">Common Issues Found</h4>
+                <div className="mb-4 md:mb-6">
+                  <h4 className="mb-2 md:mb-3 text-xs md:text-sm font-semibold">Common Issues Found</h4>
                   {lang.commonIssues.length > 0 ? (
                     <div className="space-y-2">
                       {lang.commonIssues.map((issue) => (
                         <div key={issue.type} className="flex items-center justify-between">
-                          <Badge variant="outline" className="capitalize">
+                          <Badge variant="outline" className="capitalize text-xs">
                             {issue.type}
                           </Badge>
                           <span className="text-xs font-medium">{issue.count}</span>
@@ -245,7 +245,7 @@ export default function Analytics() {
 
                 {/* Recent Reviews */}
                 <div>
-                  <h4 className="mb-3 text-sm font-semibold">Recent Feedback</h4>
+                  <h4 className="mb-2 md:mb-3 text-xs md:text-sm font-semibold">Recent Feedback</h4>
                   {lang.recentReviews.length > 0 ? (
                     <div className="space-y-2">
                       {lang.recentReviews.slice(0, 2).map((review, idx) => (
