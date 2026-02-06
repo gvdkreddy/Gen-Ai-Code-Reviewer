@@ -12,7 +12,6 @@ import {
   Zap,
   Send,
   BarChart3,
-  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "./ThemeToggle";
@@ -48,11 +47,6 @@ const navItems = [
     href: "/feedback",
     icon: Send,
   },
-  {
-    title: "About Team",
-    href: "/about-team",
-    icon: Users,
-  },
 ];
 
 export function Sidebar() {
@@ -60,7 +54,7 @@ export function Sidebar() {
   const { profile, role, signOut } = useAuth();
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-sidebar-border bg-sidebar">
+    <aside className="hidden md:flex fixed left-0 top-0 z-40 h-screen w-64 border-r border-sidebar-border bg-sidebar flex-col">
       <div className="flex h-full flex-col">
         {/* Logo */}
         <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-6">
