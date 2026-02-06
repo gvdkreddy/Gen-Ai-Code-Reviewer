@@ -10,6 +10,8 @@ import {
   User,
   Shield,
   Zap,
+  Send,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -18,6 +20,11 @@ const navItems = [
     title: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Analytics",
+    href: "/analytics",
+    icon: BarChart3,
   },
   {
     title: "Code Analyzer",
@@ -34,6 +41,11 @@ const navItems = [
     href: "/chat",
     icon: MessageSquare,
   },
+  {
+    title: "Feedback",
+    href: "/feedback",
+    icon: Send,
+  },
 ];
 
 export function Sidebar() {
@@ -49,7 +61,7 @@ export function Sidebar() {
             <Zap className="h-5 w-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-sidebar-foreground">CodeReview</h1>
+            <h1 className="text-lg font-semibold text-sidebar-foreground">TeamKronix</h1>
             <p className="text-xs text-muted-foreground">AI Agent</p>
           </div>
         </div>
