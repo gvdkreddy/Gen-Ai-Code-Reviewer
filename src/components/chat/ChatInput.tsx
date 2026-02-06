@@ -33,26 +33,26 @@ export function ChatInput({
   };
 
   return (
-    <div className="flex gap-2 border-t border-border bg-card p-4">
+    <div className="flex gap-2 border-t border-border bg-card p-2 md:p-4">
       <Textarea
         ref={textareaRef}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="min-h-[44px] max-h-32 resize-none bg-muted/50 border-0 focus-visible:ring-1 focus-visible:ring-primary"
+        className="min-h-[36px] md:min-h-[44px] max-h-24 md:max-h-32 resize-none bg-muted/50 border-0 focus-visible:ring-1 focus-visible:ring-primary text-sm"
         disabled={isLoading}
       />
       <Button
         onClick={handleSend}
         disabled={!message.trim() || isLoading}
-        className="h-11 w-11 shrink-0 bg-gradient-primary hover:opacity-90"
+        className="h-9 md:h-11 w-9 md:w-11 shrink-0 bg-gradient-primary hover:opacity-90"
         size="icon"
       >
         {isLoading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
+          <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin" />
         ) : (
-          <Send className="h-5 w-5" />
+          <Send className="h-4 md:h-5 w-4 md:w-5" />
         )}
       </Button>
     </div>
