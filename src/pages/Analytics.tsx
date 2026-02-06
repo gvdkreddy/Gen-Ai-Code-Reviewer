@@ -3,7 +3,9 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { BarChart3, Loader2, AlertCircle } from "lucide-react";
+import { generateReviewsPDF } from "@/lib/pdf-generator";
+import { Button } from "@/components/ui/button";
+import { BarChart3, Loader2, AlertCircle, Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { CodeSubmission } from "@/lib/supabase";
@@ -50,13 +52,13 @@ const LANGUAGE_COLORS: Record<string, string> = {
 export default function Analytics() {
   const { user } = useAuth();
   const { toast } = useToast();
+
   const [analytics, setAnalytics] = useState<LanguageAnalytics[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      fetchAnalytics();
-    }
+    if (user) fetchAnalytics();
   }, [user]);
 
   const fetchAnalytics = async () => {
@@ -72,21 +74,16 @@ export default function Analytics() {
         const submissions = data as CodeSubmission[];
         const languageGroups: Record<string, CodeSubmission[]> = {};
 
-        // Group submissions by language
         submissions.forEach((submission) => {
           const lang = submission.language.toLowerCase();
-          if (!languageGroups[lang]) {
-            languageGroups[lang] = [];
-          }
+          if (!languageGroups[lang]) languageGroups[lang] = [];
           languageGroups[lang].push(submission);
         });
 
-        // Calculate analytics per language
         const analyticsData = Object.entries(languageGroups).map(([lang, subs]) => {
           const averageScore =
             subs.reduce((sum, s) => sum + (s.score || 0), 0) / (subs.length || 1);
 
-          // Count issue types
           const issueMap: Record<string, number> = {};
           subs.forEach((sub) => {
             const issues = sub.issues_found as any[];
@@ -103,10 +100,8 @@ export default function Analytics() {
             .sort((a, b) => b.count - a.count)
             .slice(0, 5);
 
-          // Count optimizations
           const optimizationsCount = subs.filter((s) => s.optimized_code).length;
 
-          // Get recent reviews
           const recentReviews = subs
             .slice(0, 3)
             .map((s) => {
@@ -125,12 +120,11 @@ export default function Analytics() {
           };
         });
 
-        // Sort by total reviews
         analyticsData.sort((a, b) => b.totalReviews - a.totalReviews);
         setAnalytics(analyticsData);
       }
     } catch (error) {
-      console.error("Error fetching analytics:", error);
+      console.error(error);
       toast({
         title: "Error",
         description: "Failed to load analytics data.",
@@ -138,6 +132,25 @@ export default function Analytics() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDownloadReviews = async () => {
+    try {
+      setIsDownloading(true);
+      await generateReviewsPDF();
+      toast({
+        title: "Success",
+        description: "Reviews PDF downloaded successfully",
+      });
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to generate PDF.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -154,26 +167,50 @@ export default function Analytics() {
   return (
     <AppLayout>
       <div className="space-y-6 md:space-y-8 animate-fade-in">
-        {/* Header */}
-        <div className="text-center px-4">
-          <div className="mb-4 md:mb-6 flex justify-center">
-            <div className="flex h-12 md:h-16 w-12 md:w-16 items-center justify-center rounded-2xl bg-gradient-primary glow-primary">
-              <BarChart3 className="h-6 md:h-8 w-6 md:w-8 text-primary-foreground" />
-            </div>
+        
+        {/* Header + Download */}
+        <div className="flex flex-col items-center justify-center gap-4 text-center px-4">
+          <div className="flex h-12 md:h-16 w-12 md:w-16 items-center justify-center rounded-2xl bg-gradient-primary glow-primary">
+            <BarChart3 className="h-6 md:h-8 w-6 md:w-8 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold">Code Review Analytics</h1>
-          <p className="mt-1 md:mt-2 text-xs md:text-sm text-muted-foreground">
-            Programming language-wise code quality analysis and insights
-          </p>
+
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">
+              Code Review Analytics
+            </h1>
+            <p className="mt-1 md:mt-2 text-xs md:text-sm text-muted-foreground">
+              Programming language-wise code quality analysis and insights
+            </p>
+          </div>
+
+          <Button
+            onClick={handleDownloadReviews}
+            disabled={isDownloading}
+            className="bg-gradient-primary hover:bg-gradient-primary/90"
+          >
+            {isDownloading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Download className="mr-2 h-4 w-4" />
+                Download Reviews
+              </>
+            )}
+          </Button>
         </div>
 
         {/* Empty State */}
         {analytics.length === 0 ? (
           <div className="rounded-xl border border-border bg-card p-6 md:p-12 text-center">
             <AlertCircle className="mx-auto mb-4 h-10 md:h-12 w-10 md:w-12 text-muted-foreground" />
-            <h3 className="mb-2 text-base md:text-lg font-semibold">No data available</h3>
+            <h3 className="mb-2 text-base md:text-lg font-semibold">
+              No data available
+            </h3>
             <p className="text-xs md:text-sm text-muted-foreground">
-              Start analyzing code to see language-wise analytics
+              Start analyzing code to see analytics
             </p>
           </div>
         ) : (
@@ -183,79 +220,115 @@ export default function Analytics() {
                 key={lang.language}
                 className="overflow-hidden border-border bg-card p-4 md:p-6 transition-all hover:border-primary/30 animate-slide-up"
               >
+                
                 {/* Language Header */}
                 <div className="mb-4 md:mb-6 flex items-center justify-between">
                   <div className="flex items-center gap-2 md:gap-3">
                     <div
                       className={`flex h-8 md:h-10 w-8 md:w-10 items-center justify-center rounded-lg bg-gradient-to-br ${
-                        LANGUAGE_COLORS[lang.language] || "from-gray-500 to-gray-700"
+                        LANGUAGE_COLORS[lang.language] ||
+                        "from-gray-500 to-gray-700"
                       }`}
                     >
                       <span className="text-xs font-bold text-white">
                         {LANGUAGE_LABELS[lang.language]?.charAt(0)}
                       </span>
                     </div>
+
                     <div>
                       <h3 className="text-base md:text-lg font-semibold">
                         {LANGUAGE_LABELS[lang.language] || lang.language}
                       </h3>
                       <p className="text-xs text-muted-foreground">
-                        {lang.totalReviews} review{lang.totalReviews !== 1 ? "s" : ""}
+                        {lang.totalReviews} reviews
                       </p>
                     </div>
                   </div>
+
                   <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Average Score</p>
+                    <p className="text-xs text-muted-foreground">
+                      Average Score
+                    </p>
                     <div className="flex h-9 md:h-10 w-9 md:w-10 items-center justify-center rounded-lg bg-gradient-primary text-sm md:text-lg font-bold text-primary-foreground">
                       {lang.averageScore}
                     </div>
                   </div>
                 </div>
 
-                {/* Stats Grid */}
+                {/* Stats */}
                 <div className="mb-4 md:mb-6 grid grid-cols-2 gap-3 md:gap-4">
                   <div className="rounded-lg bg-muted/50 p-3">
-                    <p className="text-xs text-muted-foreground">Total Reviews</p>
-                    <p className="text-xl md:text-2xl font-bold">{lang.totalReviews}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Total Reviews
+                    </p>
+                    <p className="text-xl md:text-2xl font-bold">
+                      {lang.totalReviews}
+                    </p>
                   </div>
+
                   <div className="rounded-lg bg-success/10 p-3">
-                    <p className="text-xs text-muted-foreground">Optimizations</p>
-                    <p className="text-xl md:text-2xl font-bold text-success">{lang.optimizationsCount}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Optimizations
+                    </p>
+                    <p className="text-xl md:text-2xl font-bold text-success">
+                      {lang.optimizationsCount}
+                    </p>
                   </div>
                 </div>
 
-                {/* Common Issues */}
+                {/* Issues */}
                 <div className="mb-4 md:mb-6">
-                  <h4 className="mb-2 md:mb-3 text-xs md:text-sm font-semibold">Common Issues Found</h4>
+                  <h4 className="mb-2 md:mb-3 text-xs md:text-sm font-semibold">
+                    Common Issues
+                  </h4>
+
                   {lang.commonIssues.length > 0 ? (
                     <div className="space-y-2">
                       {lang.commonIssues.map((issue) => (
-                        <div key={issue.type} className="flex items-center justify-between">
-                          <Badge variant="outline" className="capitalize text-xs">
+                        <div
+                          key={issue.type}
+                          className="flex items-center justify-between"
+                        >
+                          <Badge
+                            variant="outline"
+                            className="capitalize text-xs"
+                          >
                             {issue.type}
                           </Badge>
-                          <span className="text-xs font-medium">{issue.count}</span>
+                          <span className="text-xs font-medium">
+                            {issue.count}
+                          </span>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-xs text-muted-foreground">No issues found</p>
+                    <p className="text-xs text-muted-foreground">
+                      No issues found
+                    </p>
                   )}
                 </div>
 
-                {/* Recent Reviews */}
+                {/* Reviews */}
                 <div>
-                  <h4 className="mb-2 md:mb-3 text-xs md:text-sm font-semibold">Recent Feedback</h4>
+                  <h4 className="mb-2 md:mb-3 text-xs md:text-sm font-semibold">
+                    Recent Feedback
+                  </h4>
+
                   {lang.recentReviews.length > 0 ? (
                     <div className="space-y-2">
                       {lang.recentReviews.slice(0, 2).map((review, idx) => (
-                        <p key={idx} className="text-xs text-muted-foreground line-clamp-2">
+                        <p
+                          key={idx}
+                          className="text-xs text-muted-foreground line-clamp-2"
+                        >
                           "{review}"
                         </p>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-xs text-muted-foreground">No reviews available</p>
+                    <p className="text-xs text-muted-foreground">
+                      No reviews available
+                    </p>
                   )}
                 </div>
               </Card>
