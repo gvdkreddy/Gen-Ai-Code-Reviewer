@@ -1,0 +1,332 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AI Code Review Platform - Dark Developer Theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@layer base {
+  :root {
+    /* Dark mode first - developer focused */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 175 80% 45%;
+    --primary-foreground: 222 47% 6%;
+
+    --secondary: 222 30% 14%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 222 30% 12%;
+    --muted-foreground: 215 20% 55%;
+
+    --accent: 175 80% 45%;
+    --accent-foreground: 222 47% 6%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 6%;
+
+    --info: 217 91% 60%;
+    --info-foreground: 210 40% 98%;
+
+    --border: 222 30% 18%;
+    --input: 222 30% 14%;
+    --ring: 175 80% 45%;
+
+    --radius: 0.75rem;
+
+    /* Syntax highlighting colors */
+    --syntax-keyword: 280 82% 68%;
+    --syntax-string: 142 72% 55%;
+    --syntax-number: 32 95% 60%;
+    --syntax-function: 210 82% 65%;
+    --syntax-comment: 215 20% 45%;
+    --syntax-variable: 175 80% 55%;
+    --syntax-operator: 350 80% 65%;
+    --syntax-property: 38 92% 55%;
+
+    /* Code diff colors */
+    --diff-add: 142 76% 36%;
+    --diff-add-bg: 142 76% 12%;
+    --diff-remove: 0 72% 51%;
+    --diff-remove-bg: 0 72% 12%;
+    --diff-highlight: 175 80% 20%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(175 80% 45%), hsl(200 80% 50%));
+    --gradient-dark: linear-gradient(180deg, hsl(222 47% 8%), hsl(222 47% 4%));
+    --gradient-glow: radial-gradient(ellipse at center, hsl(175 80% 45% / 0.15), transparent 70%);
+    --gradient-card: linear-gradient(145deg, hsl(222 30% 12%), hsl(222 47% 8%));
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px hsl(222 47% 4% / 0.5);
+    --shadow-md: 0 4px 6px -1px hsl(222 47% 4% / 0.5), 0 2px 4px -2px hsl(222 47% 4% / 0.5);
+    --shadow-lg: 0 10px 15px -3px hsl(222 47% 4% / 0.5), 0 4px 6px -4px hsl(222 47% 4% / 0.5);
+    --shadow-glow: 0 0 20px hsl(175 80% 45% / 0.3);
+    --shadow-glow-lg: 0 0 40px hsl(175 80% 45% / 0.4);
+
+    /* Sidebar */
+    --sidebar-background: 222 47% 5%;
+    --sidebar-foreground: 210 40% 90%;
+    --sidebar-primary: 175 80% 45%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 222 30% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 30% 15%;
+    --sidebar-ring: 175 80% 45%;
+  }
+
+  .light {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 175 80% 38%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 175 80% 38%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 175 80% 38%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+}
+
+@layer components {
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .glow-primary-lg {
+    box-shadow: var(--shadow-glow-lg);
+  }
+
+  /* Code block styling */
+  .code-block {
+    @apply rounded-lg border border-border bg-card p-4 font-mono text-sm;
+    background: var(--gradient-card);
+  }
+
+  /* Syntax highlighting classes */
+  .syntax-keyword { color: hsl(var(--syntax-keyword)); }
+  .syntax-string { color: hsl(var(--syntax-string)); }
+  .syntax-number { color: hsl(var(--syntax-number)); }
+  .syntax-function { color: hsl(var(--syntax-function)); }
+  .syntax-comment { color: hsl(var(--syntax-comment)); font-style: italic; }
+  .syntax-variable { color: hsl(var(--syntax-variable)); }
+  .syntax-operator { color: hsl(var(--syntax-operator)); }
+  .syntax-property { color: hsl(var(--syntax-property)); }
+
+  /* Diff highlighting */
+  .diff-add {
+    background: hsl(var(--diff-add-bg));
+    border-left: 3px solid hsl(var(--diff-add));
+  }
+
+  .diff-remove {
+    background: hsl(var(--diff-remove-bg));
+    border-left: 3px solid hsl(var(--diff-remove));
+  }
+
+  .diff-highlight {
+    background: hsl(var(--diff-highlight));
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply backdrop-blur-md;
+    background: hsl(var(--card) / 0.8);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Score colors */
+  .score-excellent { color: hsl(var(--success)); }
+  .score-good { color: hsl(142 72% 55%); }
+  .score-average { color: hsl(var(--warning)); }
+  .score-poor { color: hsl(var(--destructive)); }
+
+  /* Severity badges */
+  .severity-critical {
+    @apply bg-destructive/20 text-destructive border border-destructive/30;
+  }
+
+  .severity-high {
+    @apply bg-orange-500/20 text-orange-400 border border-orange-500/30;
+  }
+
+  .severity-medium {
+    @apply bg-warning/20 text-warning border border-warning/30;
+  }
+
+  .severity-low {
+    @apply bg-info/20 text-info border border-info/30;
+  }
+
+  /* Animated gradient border */
+  .gradient-border {
+    position: relative;
+    background: hsl(var(--card));
+    border-radius: var(--radius);
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: calc(var(--radius) + 1px);
+    background: var(--gradient-primary);
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  /* Pulse animation for loading states */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 10px hsl(175 80% 45% / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 25px hsl(175 80% 45% / 0.5);
+    }
+  }
+
+  /* Fade in animation */
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Slide up animation */
+  .animate-slide-up {
+    animation: slide-up 0.4s ease-out;
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Typing animation for AI responses */
+  .typing-cursor::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    color: hsl(var(--primary));
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
+}
+
+@layer utilities {
+  /* Line clamp utilities */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
