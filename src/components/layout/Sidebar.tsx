@@ -47,6 +47,11 @@ const navItems = [
     href: "/feedback",
     icon: Send,
   },
+  {
+    title: "About Team",
+    href: "/about-team",
+    icon: Users,
+  },
 ];
 
 export function Sidebar() {
@@ -123,3 +128,4 @@ export function Sidebar() {
     </aside>
   );
 }
+
