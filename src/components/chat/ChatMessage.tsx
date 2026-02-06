@@ -14,25 +14,25 @@ export function ChatMessage({ role, content, isStreaming }: ChatMessageProps) {
   return (
     <div
       className={cn(
-        "flex gap-3 animate-fade-in",
+        "flex gap-2 md:gap-3 animate-fade-in",
         isUser ? "flex-row-reverse" : "flex-row"
       )}
     >
       <div
         className={cn(
-          "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
+          "flex h-7 md:h-8 w-7 md:w-8 shrink-0 items-center justify-center rounded-full",
           isUser ? "bg-primary/20" : "bg-gradient-primary"
         )}
       >
         {isUser ? (
-          <User className="h-4 w-4 text-primary" />
+          <User className="h-3 md:h-4 w-3 md:w-4 text-primary" />
         ) : (
-          <Bot className="h-4 w-4 text-primary-foreground" />
+          <Bot className="h-3 md:h-4 w-3 md:w-4 text-primary-foreground" />
         )}
       </div>
       <div
         className={cn(
-          "max-w-[80%] rounded-2xl px-4 py-2.5",
+          "max-w-[85%] md:max-w-[80%] rounded-2xl px-3 md:px-4 py-2",
           isUser
             ? "bg-primary text-primary-foreground"
             : "bg-card border border-border"
@@ -40,7 +40,7 @@ export function ChatMessage({ role, content, isStreaming }: ChatMessageProps) {
       >
         <div
           className={cn(
-            "prose prose-sm max-w-none",
+            "prose prose-sm max-w-none text-xs md:text-sm",
             isUser ? "prose-invert" : "prose-invert",
             isStreaming && "typing-cursor"
           )}
