@@ -11,7 +11,7 @@ import Analyzer from "./pages/Analyzer";
 import History from "./pages/History";
 import HistoryDetail from "./pages/HistoryDetail";
 import Chat from "./pages/Chat";
-import Feedback from "./pages/Feedback";
+// import Feedback from "./pages/Feedback";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 import { Loader2 } from "lucide-react";
@@ -81,14 +81,14 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route
+      {/* <Route
         path="/feedback"
         element={
           <ProtectedRoute>
             <Feedback />
           </ProtectedRoute>
         }
-      />
+      /> */}
       <Route
         path="/analytics"
         element={
@@ -117,3 +117,4 @@ const App = () => (
 );
 
 export default App;
+
