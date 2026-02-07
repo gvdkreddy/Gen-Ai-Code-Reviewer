@@ -1,147 +1,143 @@
-import { useState } from "react";
+import { useId } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Copy, Check } from "lucide-react";
 
-interface CodeEditorProps {
-  value: string;
-  onChange?: (value: string) => void;
-  language: string;
-  onLanguageChange?: (language: string) => void;
-  readOnly?: boolean;
-  title?: string;
-  showLineNumbers?: boolean;
+interface ScoreDisplayProps {
+  score: number;
+  size?: "sm" | "md" | "lg";
+  showLabel?: boolean;
   className?: string;
-  maxHeight?: string;
 }
 
-const languages = [
-  { value: "html css", label: "HTML+CSS" },
-  { value: "javascript", label: "JavaScript" },
-  { value: "typescript", label: "TypeScript" },
-  { value: "python", label: "Python" },
-  { value: "java", label: "Java" },
-  { value: "c", label: "C" },
-  { value: "cpp", label: "C++" },
-  { value: "csharp", label: "C#" },
-  { value: "go", label: "Go" },
-  { value: "rust", label: "Rust" },
-  { value: "php", label: "PHP" },
-  { value: "ruby", label: "Ruby" },
-];
-
-export function CodeEditor({
-  value,
-  onChange,
-  language,
-  onLanguageChange,
-  readOnly = false,
-  title,
-  showLineNumbers = true,
+export function ScoreDisplay({
+  score,
+  size = "md",
+  showLabel = true,
   className,
-  maxHeight = "400px",
-}: CodeEditorProps) {
-  const [copied, setCopied] = useState(false);
+}: ScoreDisplayProps) {
+  const gradientId = useId();
+  const normalizedScore = Math.max(0, Math.min(100, score));
+  const circumference = 2 * Math.PI * 45;
 
-  const lines = value.split("\n");
-  const lineCount = Math.max(lines.length, 16);
-  const lineHeightRem = 1.5; // corresponds to Tailwind's leading-6 (1.5rem)
-  const contentMinHeight = `${lineCount * lineHeightRem}rem`;
+  const getScoreColor = (score: number) => {
+    if (score >= 90) return "text-success";
+    if (score >= 70) return "text-emerald-400";
+    if (score >= 50) return "text-warning";
+    return "text-destructive";
+  };
 
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (e) {
-      // ignore clipboard errors
-    }
+  const getScoreLabel = (score: number) => {
+    if (score >= 90) return "Excellent";
+    if (score >= 70) return "Good";
+    if (score >= 50) return "Average";
+    return "Needs Work";
+  };
+
+  const sizeClasses = {
+    sm: "h-16 w-16 text-lg",
+    md: "h-24 w-24 text-3xl",
+    lg: "h-32 w-32 text-4xl",
   };
 
   return (
-    <div className={cn("rounded-lg border border-border overflow-hidden", className)}>
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border bg-card px-4 py-2">
-        <div className="flex items-center gap-3">
-          {/* Window dots */}
-          <div className="flex gap-1.5">
-            <div className="h-3 w-3 rounded-full bg-destructive/60" />
-            <div className="h-3 w-3 rounded-full bg-warning/60" />
-            <div className="h-3 w-3 rounded-full bg-success/60" />
-          </div>
-          {title && <span className="text-sm font-medium text-muted-foreground">{title}</span>}
-        </div>
-        <div className="flex items-center gap-2">
-          {onLanguageChange && !readOnly && (
-            <Select value={language} onValueChange={onLanguageChange}>
-              <SelectTrigger className="h-8 w-32 text-xs">
-                <SelectValue placeholder="Language" />
-              </SelectTrigger>
-              <SelectContent>
-                {languages.map((lang) => (
-                  <SelectItem key={lang.value} value={lang.value}>
-                    {lang.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-          {readOnly && (
-            <span className="text-xs text-muted-foreground capitalize">{language}</span>
-          )}
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={copyToClipboard}>
-            {copied ? (
-              <Check className="h-4 w-4 text-success" />
-            ) : (
-              <Copy className="h-4 w-4 text-muted-foreground" />
-            )}
-          </Button>
-        </div>
-      </div>
-
-      {/* Code area */}
+    <div className={cn("flex flex-col items-center gap-2", className)}>
       <div
-        className="custom-scrollbar overflow-auto bg-muted/30"
-        style={{ maxHeight, minHeight: contentMinHeight }}
+        className={cn(
+          "relative flex items-center justify-center rounded-full border border-border bg-gradient-to-b from-card to-background shadow-md",
+          sizeClasses[size]
+        )}
       >
-        <div className="flex" style={{ minHeight: contentMinHeight }}>
-          {showLineNumbers && (
-            <div className="sticky left-0 flex-shrink-0 select-none border-r border-border bg-muted/50 px-3 py-4 text-right font-mono text-xs text-muted-foreground">
-              {Array.from({ length: lineCount }).map((_, i) => (
-                <div key={i} className="leading-6">
-                  {i + 1}
-                </div>
-              ))}
-            </div>
-          )}
-          <div className="flex-1 p-4">
-            {readOnly ? (
-              <pre
-                className="font-mono text-sm leading-6 text-foreground whitespace-pre-wrap break-all"
-                style={{ minHeight: contentMinHeight }}
-              >
-                {value || "// No code"}
-              </pre>
-            ) : (
-              <textarea
-                value={value}
-                onChange={(e) => onChange?.(e.target.value)}
-                className="w-full resize-none bg-transparent font-mono text-sm leading-6 text-foreground outline-none placeholder:text-muted-foreground"
-                style={{ minHeight: contentMinHeight }}
-                placeholder="// Paste your code here..."
-                spellCheck={false}
-              />
-            )}
+        <svg className="absolute inset-0" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke="hsl(var(--border))"
+            strokeWidth="8"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="38"
+            fill="none"
+            stroke="hsl(var(--muted))"
+            strokeWidth="2"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke={`url(#${gradientId})`}
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeDasharray={`${(normalizedScore / 100) * circumference} ${circumference}`}
+            transform="rotate(-90 50 50)"
+            className="transition-all duration-1000 ease-out"
+          />
+          <defs>
+            <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="hsl(var(--primary))" />
+              <stop offset="100%" stopColor="hsl(175 80% 60%)" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span className={cn("font-bold", getScoreColor(normalizedScore))}>
+          {normalizedScore}
+        </span>
+      </div>
+      {showLabel && (
+        <span className={cn("text-sm font-medium", getScoreColor(normalizedScore))}>
+          {getScoreLabel(normalizedScore)}
+        </span>
+      )}
+    </div>
+  );
+}
+
+interface ScoreBreakdownProps {
+  scores: {
+    quality: number;
+    efficiency: number;
+    security: number;
+    readability: number;
+    bestPractices: number;
+  };
+  className?: string;
+}
+
+export function ScoreBreakdown({ scores, className }: ScoreBreakdownProps) {
+  const categories = [
+    { label: "Code Quality", value: scores.quality },
+    { label: "Efficiency", value: scores.efficiency },
+    { label: "Security", value: scores.security },
+    { label: "Readability", value: scores.readability },
+    { label: "Best Practices", value: scores.bestPractices },
+  ];
+
+  const getColor = (score: number) => {
+    if (score >= 90) return "bg-success";
+    if (score >= 70) return "bg-emerald-400";
+    if (score >= 50) return "bg-warning";
+    return "bg-destructive";
+  };
+
+  return (
+    <div className={cn("space-y-3", className)}>
+      {categories.map((cat) => (
+        <div key={cat.label} className="space-y-1">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">{cat.label}</span>
+            <span className="font-semibold text-foreground">{cat.value}/100</span>
+          </div>
+          <div className="h-1.5 overflow-hidden rounded-full bg-muted/60">
+            <div
+              className={cn("h-full rounded-full transition-all duration-500", getColor(cat.value))}
+              style={{ width: `${cat.value}%` }}
+            />
           </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }
