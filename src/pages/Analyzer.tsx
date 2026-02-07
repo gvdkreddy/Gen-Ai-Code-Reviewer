@@ -237,7 +237,7 @@ export default function Analyzer() {
             <div className="rounded-xl border border-border bg-card p-4 md:p-6">
               <h3 className="mb-4 text-base md:text-lg font-semibold">Export Results & Analysis</h3>
               <div className="space-y-3 md:space-y-4">
-                <div>
+                <div className="flex items-center gap-4">
                   <button
                     onClick={() => setShowOriginalOptions(!showOriginalOptions)}
                     className="w-full md:w-auto px-3 md:px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
@@ -246,7 +246,7 @@ export default function Analyzer() {
                   </button>
 
                   {showOriginalOptions && (
-                    <div className="mt-2 ml-0 md:ml-4 flex flex-col gap-2">
+                    <div className="flex space-x-4 mt-2 ml-4">
                       <DownloadButton
                         code={code}
                         filename={`original_${Date.now()}.csv`}
@@ -268,7 +268,7 @@ export default function Analyzer() {
                   )}
                 </div>
 
-                <div>
+                <div className="flex items-center gap-4">
                   <button
                     onClick={() => setShowOptimizedOptions(!showOptimizedOptions)}
                     className="w-full md:w-auto px-3 md:px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
@@ -277,7 +277,7 @@ export default function Analyzer() {
                   </button>
 
                   {showOptimizedOptions && (
-                    <div className="mt-2 ml-0 md:ml-4 flex flex-col gap-2">
+                    <div className="flex space-x-4 mt-2 ml-4">
                       <DownloadButton
                         code={result.optimizedCode}
                         filename={`optimized_${Date.now()}.csv`}
@@ -299,7 +299,7 @@ export default function Analyzer() {
                   )}
                 </div>
 
-                <div>
+                <div className="flex items-center gap-4">
                   <button
                     onClick={() => setShowRewrittenOptions(!showRewrittenOptions)}
                     className="w-full md:w-auto px-3 md:px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
@@ -308,7 +308,7 @@ export default function Analyzer() {
                   </button>
 
                   {showRewrittenOptions && (
-                    <div className="mt-2 ml-0 md:ml-4 flex flex-col gap-2">
+                    <div className="flex space-x-4 mt-2 ml-4">
                       <DownloadButton
                         code={result.rewrittenCode}
                         filename={`rewritten_${Date.now()}.csv`}
@@ -432,5 +432,6 @@ export default function Analyzer() {
     </AppLayout>
   );
 }
+
 
 
