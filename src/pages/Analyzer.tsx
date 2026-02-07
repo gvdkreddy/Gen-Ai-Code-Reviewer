@@ -336,7 +336,7 @@ export default function Analyzer() {
               {result ? (
                 <div className="space-y-4 md:space-y-6">
                   <div className="flex justify-center">
-                    <ScoreDisplay score={result.score} size="md md:lg" />
+                    <ScoreDisplay score={result.score} size="lg" />
                   </div>
                   <ScoreBreakdown scores={result.scores} />
                 </div>
