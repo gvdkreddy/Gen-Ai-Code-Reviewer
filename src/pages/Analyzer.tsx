@@ -330,12 +330,9 @@ export default function Analyzer() {
             />
           </div>
 
-          <div style={{ animationDelay: "100ms" }}>
+          <div className="animate-slide-up" style={{ animationDelay: "100ms" }}>
             <div className="rounded-xl border border-border bg-card p-4 md:p-6">
-              <h3 className="mb-4 text-base md:text-lg font-semibold">
-                Code Score
-              </h3>
-
+              <h3 className="mb-4 text-base md:text-lg font-semibold">Code Score</h3>
               {result ? (
                 <div className="space-y-4 md:space-y-6">
                   <div className="flex justify-center">
@@ -344,9 +341,11 @@ export default function Analyzer() {
                   <ScoreBreakdown scores={result.scores} />
                 </div>
               ) : (
-                <div className="flex flex-col items-center py-12 text-center">
-                  <Sparkles className="h-8 w-8 text-muted-foreground mb-2" />
-                  <p className="text-sm text-muted-foreground">
+                <div className="flex flex-col items-center justify-center py-8 md:py-12 text-center">
+                  <div className="mb-4 flex h-14 md:h-16 w-14 md:w-16 items-center justify-center rounded-full bg-muted">
+                    <Sparkles className="h-6 md:h-8 w-6 md:w-8 text-muted-foreground" />
+                  </div>
+                  <p className="text-xs md:text-sm text-muted-foreground">
                     Submit code to see your score
                   </p>
                 </div>
@@ -354,6 +353,7 @@ export default function Analyzer() {
             </div>
           </div>
         </div>
+
 
         {/* EXPORT — FULL */}
         {result && (
@@ -576,3 +576,4 @@ export default function Analyzer() {
     </AppLayout>
   );
 }
+
