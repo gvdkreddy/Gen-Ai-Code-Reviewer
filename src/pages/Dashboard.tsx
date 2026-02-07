@@ -73,13 +73,17 @@ export default function Dashboard() {
             subtitle="All time"
             icon={Code2}
           />
-          <StatsCard
-            title="Average Score"
-            value={`${stats.averageScore}/100`}
-            subtitle="Code quality"
-            icon={TrendingUp}
-            trend={stats.averageScore > 0 ? { value: 12, label: "from last month" } : undefined}
-          />
+          <div onClick={() => window.location.href = '/analytics'} className="cursor-pointer h-full">
+            <div className="h-full">
+              <StatsCard
+              title="Average Score"
+              value={`${stats.averageScore}/100`}
+              subtitle="Code quality"
+              icon={TrendingUp}
+              trend={stats.averageScore > 0 ? { value: 12, label: "from last month" } : undefined}
+              />
+            </div>
+          </div>
           <StatsCard
             title="Issues Found"
             value={stats.issuesFixed}
@@ -102,3 +106,4 @@ export default function Dashboard() {
     </AppLayout>
   );
 }
+
