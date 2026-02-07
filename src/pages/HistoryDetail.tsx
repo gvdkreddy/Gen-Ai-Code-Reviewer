@@ -88,7 +88,7 @@ export default function HistoryDetail() {
             <div className="text-right">
               <p className="text-xs md:text-sm text-muted-foreground">Overall Score</p>
               <div className="flex justify-end">
-                <ScoreDisplay score={submission.score || 0} size="md md:lg" />
+                <ScoreDisplay score={submission.score || 0} size="lg" />
               </div>
             </div>
           </div>
