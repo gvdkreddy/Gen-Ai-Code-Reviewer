@@ -126,7 +126,7 @@ export default function Feedback() {
             <Input
               id="name"
               type="text"
-              placeholder="John Doe"
+              placeholder="Team Kronix"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="bg-muted/50 text-sm"
@@ -142,7 +142,7 @@ export default function Feedback() {
             <Input
               id="email"
               type="email"
-              placeholder="your.email@example.com"
+              placeholder="TeamKronix@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-muted/50 text-sm"
