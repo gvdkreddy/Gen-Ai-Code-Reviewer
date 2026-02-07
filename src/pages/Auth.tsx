@@ -128,7 +128,7 @@ export default function Auth() {
                 <Input
                   id="displayName"
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="Team Kronix"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   className="bg-muted/50"
@@ -141,7 +141,7 @@ export default function Auth() {
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="teamKronix@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -189,3 +189,4 @@ export default function Auth() {
     </div>
   );
 }
+
