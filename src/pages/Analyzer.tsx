@@ -330,121 +330,30 @@ export default function Analyzer() {
             />
           </div>
 
-<div
-  className="animate-slide-up"
-  style={{ animationDelay: "100ms" }}
->
-  <div className="rounded-2xl border border-border bg-[#020817] p-4 md:p-6">
+          <div style={{ animationDelay: "100ms" }}>
+            <div className="rounded-xl border border-border bg-card p-4 md:p-6">
+              <h3 className="mb-4 text-base md:text-lg font-semibold">
+                Code Score
+              </h3>
 
-    <h3 className="mb-6 text-base md:text-lg font-semibold text-white">
-      Code Score
-    </h3>
-
-    {result ? (
-      <div className="space-y-6 md:space-y-8">
-
-        {/* Circular Score */}
-        <div className="flex flex-col items-center justify-center">
-
-          <div className="relative h-40 w-40">
-
-            {/* Outer ring */}
-            <div className="absolute inset-0 rounded-full border-8 border-slate-800"></div>
-
-            {/* Animated Progress Ring */}
-            <svg
-              className="absolute inset-0 -rotate-90"
-              viewBox="0 0 160 160"
-            >
-              <circle
-                cx="80"
-                cy="80"
-                r="70"
-                stroke="#22d3ee"
-                strokeWidth="8"
-                fill="transparent"
-                strokeDasharray={440}
-                strokeDashoffset={
-                  440 - (440 * result.score) / 100
-                }
-                strokeLinecap="round"
-                className="transition-all duration-1000 ease-out"
-              />
-            </svg>
-
-            {/* Score Number */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span
-                className={`text-4xl font-bold transition-all duration-700 ${
-                  result.score < 40
-                    ? "text-red-500"
-                    : result.score < 70
-                    ? "text-yellow-400"
-                    : "text-green-400"
-                }`}
-              >
-                {result.score}
-              </span>
+              {result ? (
+                <div className="space-y-4 md:space-y-6">
+                  <div className="flex justify-center">
+                    <ScoreDisplay score={result.score} size="md md:lg" />
+                  </div>
+                  <ScoreBreakdown scores={result.scores} />
+                </div>
+              ) : (
+                <div className="flex flex-col items-center py-12 text-center">
+                  <Sparkles className="h-8 w-8 text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground">
+                    Submit code to see your score
+                  </p>
+                </div>
+              )}
             </div>
           </div>
-
-          {/* Score Label */}
-          <p
-            className={`mt-4 text-sm font-medium transition-all duration-700 ${
-              result.score < 40
-                ? "text-red-500"
-                : result.score < 70
-                ? "text-yellow-400"
-                : "text-green-400"
-            }`}
-          >
-            {result.score < 40
-              ? "Needs Work"
-              : result.score < 70
-              ? "Good"
-              : "Excellent"}
-          </p>
         </div>
-
-        {/* Breakdown Bars */}
-        <div className="space-y-4">
-
-          {[
-            { label: "Code Quality", value: result.scores.quality },
-            { label: "Efficiency", value: result.scores.efficiency },
-            { label: "Security", value: result.scores.security },
-            { label: "Readability", value: result.scores.readability },
-            { label: "Best Practices", value: result.scores.bestPractices },
-          ].map((item, i) => (
-            <div key={i}>
-
-              <div className="flex justify-between text-sm text-slate-300 mb-1">
-                <span>{item.label}</span>
-                <span>{item.value}/100</span>
-              </div>
-
-              <div className="h-2 w-full rounded bg-slate-800 overflow-hidden">
-                <div
-                  className="h-full bg-cyan-400 transition-all duration-1000 ease-out"
-                  style={{ width: `${item.value}%` }}
-                />
-              </div>
-
-            </div>
-          ))}
-
-        </div>
-      </div>
-    ) : (
-      <div className="flex flex-col items-center py-12 text-center">
-        <Sparkles className="h-8 w-8 text-muted-foreground mb-2" />
-        <p className="text-sm text-muted-foreground">
-          Submit code to see your score
-        </p>
-      </div>
-    )}
-  </div>
-</div>
 
         {/* EXPORT — FULL */}
         {result && (
@@ -667,4 +576,3 @@ export default function Analyzer() {
     </AppLayout>
   );
 }
-
