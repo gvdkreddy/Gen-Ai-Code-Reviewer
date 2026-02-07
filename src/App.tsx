@@ -13,6 +13,7 @@ import HistoryDetail from "./pages/HistoryDetail";
 import Chat from "./pages/Chat";
 import Feedback from "./pages/Feedback";
 import Analytics from "./pages/Analytics";
+import Settings from "./pages/Settings";
 import AboutTeam from "./pages/AboutTeam";
 import NotFound from "./pages/NotFound";
 import { Loader2 } from "lucide-react";
@@ -42,6 +43,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/auth" element={<Auth />} />
+
       <Route
         path="/dashboard"
         element={
@@ -50,6 +52,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/analyzer"
         element={
@@ -58,6 +61,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/history"
         element={
@@ -66,6 +70,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/history/:id"
         element={
@@ -74,6 +79,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/chat"
         element={
@@ -82,6 +88,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/feedback"
         element={
@@ -90,6 +97,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/analytics"
         element={
@@ -98,6 +106,16 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/about-team"
         element={
@@ -106,6 +124,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
